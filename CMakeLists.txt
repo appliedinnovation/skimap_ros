@@ -56,7 +56,9 @@ endif(OPENMP_FOUND)
 find_package(Eigen3 REQUIRED)
 
 #OpenCV
-find_package(OpenCV REQUIRED COMPONENTS core imgproc)
+set(OpenCV_INCLUDE_DIRS /usr/local/)
+set(OpenCV_LIBS /usr/local/lib/libopencv_core.so)
+#find_package(OpenCV REQUIRED COMPONENTS core imgproc)
 if(OpenCV_INCLUDE_DIRS)
   include_directories(${OpenCV_INCLUDE_DIRS})
 endif(OpenCV_INCLUDE_DIRS)
