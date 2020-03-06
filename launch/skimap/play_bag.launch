@@ -1,0 +1,6 @@
+<launch>
+  <arg name="file" default="$(find skimap_ros)/output_rgba8_16uc1.bag" />
+  <node pkg="rosbag" type="play" name="playback" args="-l --clock $(arg file)">
+    <remap from="/0/depth/image_raw" to="/cloud_in"/>
+  </node>
+</launch>
