@@ -1,0 +1,7 @@
+<launch>
+  <arg name="camera" default="0" />
+  <arg name="file" default="$(find skimap_ros)/output_pointcloud2.bag" />
+  <node pkg="rosbag" type="play" name="playback" args="-l $(arg file)">
+    <remap from="/$(arg camera)/depth/camera_info" to="/camera_info"/>
+  </node>
+</launch>
