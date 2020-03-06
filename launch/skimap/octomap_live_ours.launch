@@ -1,56 +1,51 @@
 <!--
-NOTE: this launch file requires installation of:
-  * ros-melodic-octomap-server
-  * ros-melodic-depth-image-proc
+    NOTE: this launch file requires installation of:
+    * ros-melodic-octomap-server
+    * ros-melodic-depth-image-proc
 -->
 
 <launch>
 
-    <arg name="camera" default="0" />
+  <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager"/>
 
-    <!-- Remap rgb / depth image topic for depth_image_proc converter nodes -->
-    <remap from="/$(arg camera)/rgb/image_raw" to="/rgb/image_rect_color"/>
-    <remap from="/$(arg camera)/depth/image_raw" to="/depth/image_rect"/>
-
-    <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager"/>
-
-    <!--
-        Node which registers a depth image to a camera tf frame
-    	  listens on: rgb/camera_info, depth/camera_info, depth/image_rect
-	  publishes: depth_registered/camera_info, depth_registered/image_rect
-    -->
+  <!--
+      Node which registers a depth image to a camera tf frame
+      listens on: rgb/camera_info, depth/camera_info, depth/image_rect
+      publishes: depth_registered/camera_info, depth_registered/image_rect
+  -->
+  <?ignore
     <node name="depthReg" pkg="nodelet" type="nodelet" args="load depth_image_proc/register standalone_nodelet">
     </node>
+  ?>
 
-    <!--
-	Node which converts 2D depth image into pointcloud
-    	  listens on: camera_info, image_rect
-	  publishes: points
-    -->
-    <node name="depthProc" pkg="nodelet" type="nodelet" args="load depth_image_proc/point_cloud_xyz standalone_nodelet">
-    </node>
-
-    <!--
-	Node which converts 2D depth image AND RGB into pointcloud
-    	  listens on: rgb/camera_info, rgb/image_rect_color, depth_registered/image_rect
-	  publishes: depth_registered/camera_info, depth_registered/points
-    <node name="depthProcRGB" pkg="depth_image_proc" type="point_cloud_xyzrgb">
-    </node>
-    -->
-
-    <!-- Remap point cloud topic for octomap_server_node -->
+  <!--
+      Node which converts 2D depth image into pointcloud
+      listens on: camera_info, image_rect
+      publishes: points
+      Note: we have to remap the output for octomap.
+  -->
+  <node name="depthProc" pkg="nodelet" type="nodelet" args="load depth_image_proc/point_cloud_xyz standalone_nodelet">
     <remap from="/points" to="/cloud_in"/>
+  </node>
 
-    <!-- Octomap main mapping node -->
-    <node name="octomap" output="screen" pkg="octomap_server" type="octomap_server_node">
-        <!-- Mapping parameters -->
-        <param name="frame_id" value="odom" />
-        <param name="resolution" value="0.1" />
-	<!-- OLDER PARAMETERS: 
-        <param name="camera_frame_name" value="base_camera_link" />
-	-->
-    </node>
+  <!--
+      Node which converts 2D depth image AND RGB into pointcloud
+      listens on: rgb/camera_info, rgb/image_rect_color, depth_registered/image_rect
+      publishes: depth_registered/camera_info, depth_registered/points
+      Note: we have to remap the output for octomap.
 
-    <node pkg="rviz" type="rviz" output="screen" name="rviz" args="-d $(find skimap_ros)/rviz/octomap_live_ours.rviz" />
+      <node name="depthProcRGB" pkg="depth_image_proc" type="point_cloud_xyzrgb">
+	<remap from="/depth_registered/points" to="/cloud_in"/>
+      </node>
+  -->
+
+  <!-- Octomap main mapping node -->
+  <node name="octomap" output="screen" pkg="octomap_server" type="octomap_server_node">
+    <!-- Mapping parameters -->
+    <param name="frame_id" value="odom" />
+    <param name="resolution" value="0.1" />
+  </node>
+
+  <node pkg="rviz" type="rviz" output="screen" name="rviz" args="-d $(find skimap_ros)/rviz/octomap_live_ours.rviz" />
 
 </launch>
