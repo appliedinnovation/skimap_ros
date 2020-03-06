@@ -17,22 +17,8 @@
       publishes:
         depth_registered/camera_info,
         depth_registered/image_rect
-
-      <node name="depthReg" pkg="nodelet" type="nodelet" args="load depth_image_proc/register standalone_nodelet">
-      </node>
   -->
-
-  <!--
-      Node which converts 2D depth image into XYZ pointcloud
-      subscribes:
-        camera_info, image_rect
-      publishes:
-        points
-      Notes:
-	we have to remap the output for octomap.
-  -->
-  <node name="depthProc" pkg="nodelet" type="nodelet" args="load depth_image_proc/point_cloud_xyz standalone_nodelet">
-    <remap from="/points" to="/cloud_in"/>
+  <node name="depthReg" pkg="nodelet" type="nodelet" args="load depth_image_proc/register standalone_nodelet">
   </node>
 
   <!--
@@ -46,11 +32,10 @@
 	depth_registered/points
       Notes:
         we have to remap the output for octomap.
-
-      <node name="depthProcRGB" pkg="depth_image_proc" type="point_cloud_xyzrgb">
-	<remap from="/depth_registered/points" to="/cloud_in"/>
-      </node>
   -->
+  <node name="depthProcRGB" pkg="nodelet" type="nodelet" args="load depth_image_proc/point_cloud_xyzrgb standalone_nodelet">
+    <remap from="/depth_registered/points" to="/cloud_in"/>
+  </node>
 
   <!--
       Octomap main mapping node
@@ -62,6 +47,6 @@
     <param name="resolution" value="0.1" />
   </node>
 
-  <node pkg="rviz" type="rviz" output="screen" name="rviz" args="-d $(find skimap_ros)/rviz/octomap_live_ours.rviz" />
+  <node pkg="rviz" type="rviz" output="screen" name="rviz" args="-d $(find skimap_ros)/rviz/octomap_live_ours_rgb.rviz" />
 
 </launch>
