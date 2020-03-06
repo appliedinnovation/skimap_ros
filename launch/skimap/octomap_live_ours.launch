@@ -9,30 +9,43 @@
   <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager"/>
 
   <!--
-      Node which registers a depth image to a camera tf frame
-      listens on: rgb/camera_info, depth/camera_info, depth/image_rect
-      publishes: depth_registered/camera_info, depth_registered/image_rect
+      Node which registers a depth image to a camera tf frame - REQUIRED FOR XYZRGB
+      subscribes:
+        rgb/camera_info,
+        depth/camera_info,
+	depth/image_rect
+      publishes:
+        depth_registered/camera_info,
+        depth_registered/image_rect
+
+      <node name="depthReg" pkg="nodelet" type="nodelet" args="load depth_image_proc/register standalone_nodelet">
+      </node>
   -->
-  <?ignore
-    <node name="depthReg" pkg="nodelet" type="nodelet" args="load depth_image_proc/register standalone_nodelet">
-    </node>
-  ?>
 
   <!--
-      Node which converts 2D depth image into pointcloud
-      listens on: camera_info, image_rect
-      publishes: points
-      Note: we have to remap the output for octomap.
+      Node which converts 2D depth image into XYZ pointcloud
+      subscribes:
+        camera_info, image_rect
+      publishes:
+        points
+      Notes:
+	we have to remap the output for octomap.
   -->
   <node name="depthProc" pkg="nodelet" type="nodelet" args="load depth_image_proc/point_cloud_xyz standalone_nodelet">
     <remap from="/points" to="/cloud_in"/>
   </node>
 
   <!--
-      Node which converts 2D depth image AND RGB into pointcloud
-      listens on: rgb/camera_info, rgb/image_rect_color, depth_registered/image_rect
-      publishes: depth_registered/camera_info, depth_registered/points
-      Note: we have to remap the output for octomap.
+      Node which converts 2D depth image and RGB into XYZRGB pointcloud
+      subscribes:
+        rgb/camera_info,
+	rgb/image_rect_color,
+	depth_registered/image_rect
+      publishes:
+        depth_registered/camera_info,
+	depth_registered/points
+      Notes:
+        we have to remap the output for octomap.
 
       <node name="depthProcRGB" pkg="depth_image_proc" type="point_cloud_xyzrgb">
 	<remap from="/depth_registered/points" to="/cloud_in"/>
