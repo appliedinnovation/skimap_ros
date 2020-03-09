@@ -2,13 +2,7 @@
   <arg name="camera" default="0" />
   <arg name="file" default="$(find skimap_ros)/output_rgba8_16uc1.bag" />
   <node pkg="rosbag" type="play" name="playback" args="-l $(arg file)">
-    <!-- for the basic point cloud nodelet: -->
-    <remap from="/$(arg camera)/depth/image_raw" to="/image_rect"/>
-    <remap from="/$(arg camera)/depth/camera_info" to="/camera_info"/>
-    <!-- for the RGB point cloud nodelet: -->
-    <!-- <remap from="/$(arg camera)/rgb/image_raw" to="/rgb/image_rect_color"/> -->
-    <!-- <remap from="/$(arg camera)/rgb/camera_info" to="/rgb/camera_info"/> -->
-    <!-- <remap from="/$(arg camera)/depth/image_raw" to="/depth/image_rect"/> -->
-    <!-- <remap from="/$(arg camera)/depth/camera_info" to="/depth/camera_info"/> -->
+    <remap from="/$(arg camera)/depth/image_raw" to="image_raw"/>
+    <remap from="/$(arg camera)/depth/camera_info" to="camera_info"/>
   </node>
 </launch>

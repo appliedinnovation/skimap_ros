@@ -6,21 +6,21 @@
 
 <launch>
 
-  <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager"/>
+  <node pkg="nodelet" type="nodelet" args="manager"
+	name="standalone_nodelet" output="screen"/>
 
   <!--
-      Node which registers a depth image to a camera tf frame - REQUIRED FOR XYZRGB
+      Node which converts depth image in mm to float depth image in m
       subscribes:
-        rgb/camera_info,
-        depth/camera_info,
-	depth/image_rect
+        image_raw
       publishes:
-        depth_registered/camera_info,
-        depth_registered/image_rect
-
-      <node name="depthReg" pkg="nodelet" type="nodelet" args="load depth_image_proc/register standalone_nodelet">
-      </node>
+        image
+      Notes:
+	we have to remap the output for depthProc.
   -->
+  <node name="depthConv" pkg="nodelet" type="nodelet" args="load depth_image_proc/convert_metric standalone_nodelet --no-bond" output="screen">
+    <remap from="image" to="image_rect"/>
+  </node>
 
   <!--
       Node which converts 2D depth image into XYZ pointcloud
@@ -31,26 +31,9 @@
       Notes:
 	we have to remap the output for octomap.
   -->
-  <node name="depthProc" pkg="nodelet" type="nodelet" args="load depth_image_proc/point_cloud_xyz standalone_nodelet">
+  <node name="depthProc" pkg="nodelet" type="nodelet" args="load depth_image_proc/point_cloud_xyz standalone_nodelet --no-bond" output="screen">
     <remap from="/points" to="/cloud_in"/>
   </node>
-
-  <!--
-      Node which converts 2D depth image and RGB into XYZRGB pointcloud
-      subscribes:
-        rgb/camera_info,
-	rgb/image_rect_color,
-	depth_registered/image_rect
-      publishes:
-        depth_registered/camera_info,
-	depth_registered/points
-      Notes:
-        we have to remap the output for octomap.
-
-      <node name="depthProcRGB" pkg="depth_image_proc" type="point_cloud_xyzrgb">
-	<remap from="/depth_registered/points" to="/cloud_in"/>
-      </node>
-  -->
 
   <!--
       Octomap main mapping node
@@ -58,7 +41,7 @@
   <node name="octomap" output="screen" pkg="octomap_server" type="octomap_server_node">
     <!-- Mapping parameters -->
     <param name="frame_id" value="/odom" />
-    <param name="base_frame_id" value="base_footprint" />
+    <param name="base_frame_id" value="base_link" />
     <param name="resolution" value="0.1" />
   </node>
 
