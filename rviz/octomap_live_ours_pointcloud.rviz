@@ -1,14 +1,25 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 78
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /Status1
         - /TF1/Frames1
         - /TF1/Tree1
-      Splitter Ratio: 0.5
-    Tree Height: 1841
+        - /Depth Points1
+        - /Octomap PointCloud1
+        - /Octomap PointCloud1/Status1
+        - /Map1
+        - /Occupied Cells Vis Array1
+        - /Occupied Cells Vis Array1/Status1
+        - /Occupied Cells Vis Array1/Namespaces1
+        - /Path1
+        - /Path1/Offset1
+        - /Image1
+      Splitter Ratio: 0.549199104309082
+    Tree Height: 352
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -21,14 +32,13 @@ Panels:
   - Class: rviz/Views
     Expanded:
       - /Current View1
-      - /Current View1/Focal Point1
     Name: Views
     Splitter Ratio: 0.5
   - Class: rviz/Time
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Octomap PointCloud
+    SyncSource: Image
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -61,6 +71,8 @@ Visualization Manager:
         All Enabled: true
         base_camera_link:
           Value: true
+        base_camera_link_front:
+          Value: true
         base_footprint:
           Value: true
         base_link:
@@ -81,6 +93,8 @@ Visualization Manager:
               base_link:
                 base_camera_link:
                   {}
+                base_camera_link_front:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -93,9 +107,9 @@ Visualization Manager:
       Channel Name: intensity
       Class: rviz/PointCloud2
       Color: 255; 255; 255
-      Color Transformer: RGBF32
-      Decay Time: 0
-      Enabled: true
+      Color Transformer: Intensity
+      Decay Time: 2
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -103,7 +117,7 @@ Visualization Manager:
       Min Intensity: 0
       Name: Depth Points
       Position Transformer: XYZ
-      Queue Size: 10
+      Queue Size: 4
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.009999999776482582
@@ -112,47 +126,47 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 19.350000381469727
-        Min Value: -50.349998474121094
+        Max Value: 1.475000023841858
+        Min Value: 0.574999988079071
         Value: true
       Axis: Z
       Channel Name: x
       Class: rviz/PointCloud2
       Color: 255; 255; 255
       Color Transformer: FlatColor
-      Decay Time: 0
-      Enabled: false
+      Decay Time: 2
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 46.75
+      Max Intensity: 4.675000190734863
       Min Color: 0; 0; 0
-      Min Intensity: -38.95000076293945
+      Min Intensity: -2.625
       Name: Octomap PointCloud
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.009999999776482582
+      Size (m): 0.10000000149011612
       Style: Flat Squares
       Topic: /octomap_point_cloud_centers
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic: /projected_map
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /occupied_cells_vis_array
@@ -162,18 +176,53 @@ Visualization Manager:
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /free_cells_vis_array
       Name: Free Cells Vis Array
       Namespaces:
         {}
       Queue Size: 100
-      Value: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 25; 255; 0
+      Enabled: true
+      Head Diameter: 0.10000000149011612
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Billboards
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: Arrows
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.009999999776482582
+      Shaft Length: 0.10000000149011612
+      Topic: /nav_msgs
+      Unreliable: false
+      Value: true
+    - Class: rviz/Image
+      Enabled: true
+      Image Topic: /unreal_ros/image_depth
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: odom
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -196,8 +245,8 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Class: rviz/Orbit
-      Distance: 43.111183166503906
+      Class: rviz/ThirdPersonFollower
+      Distance: 26.363603591918945
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -212,10 +261,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3697970509529114
+      Pitch: 0.18979786336421967
       Target Frame: base_camera_link
-      Value: Orbit (rviz)
-      Yaw: 3.9027936458587646
+      Value: ThirdPersonFollower (rviz)
+      Yaw: 3.012242317199707
     Saved:
       - Class: rviz/Orbit
         Distance: 10.239899635314941
@@ -240,10 +289,12 @@ Visualization Manager:
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 2132
+  Height: 913
   Hide Left Dock: false
-  Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000016a000007bafc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b000007ba000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000001200520047004200200049006d00610067006501000005b5000002400000000000000000fb00000014004c00690076006500430061006d00650072006101000002670000011f0000000000000000fb000000160044006500700074006800200049006d00610067006501000005f0000002050000000000000000fb0000000a0049006d006100670065010000070f000000e60000000000000000000000010000010f000007bafc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b000007ba000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000f000000003efc0100000002fb0000000800540069006d0065010000000000000f000000024400fffffffb0000000800540069006d0065010000000000000450000000000000000000000c7b000007ba00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Hide Right Dock: true
+  Image:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd000000040000000000000188000002f3fc020000000ffb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000019d000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000001200520047004200200049006d00610067006501000005b5000002400000000000000000fb00000014004c00690076006500430061006d00650072006101000002670000011f0000000000000000fb000000160044006500700074006800200049006d00610067006501000005f0000002050000000000000000fb0000000a0049006d00610067006501000001e0000001500000001600fffffffb0000000a0049006d0061006700650000000276000000c10000000000000000fb0000000a0049006d0061006700650100000276000000c10000000000000000fb0000000a0049006d0061006700650000000276000000c10000000000000000000000010000010f000002f3fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000002f3000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000038d0000003efc0100000002fb0000000800540069006d006501000000000000038d000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000001ff000002f300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -251,7 +302,7 @@ Window Geometry:
   Tool Properties:
     collapsed: false
   Views:
-    collapsed: false
-  Width: 3840
-  X: 3840
-  Y: 0
+    collapsed: true
+  Width: 909
+  X: 49
+  Y: 27
