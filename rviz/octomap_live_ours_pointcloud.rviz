@@ -28,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: Octomap PointCloud
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -132,14 +132,14 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: -9999
-        Min Value: 9999
+        Max Value: 1.975000023841858
+        Min Value: 0.2750000059604645
         Value: true
       Axis: Z
       Channel Name: x
       Class: rviz/PointCloud2
       Color: 255; 255; 255
-      Color Transformer: AxisColor
+      Color Transformer: RGB8
       Decay Time: 2
       Enabled: false
       Invert Rainbow: false
@@ -271,10 +271,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.42479678988456726
+      Pitch: 0.1947968304157257
       Target Frame: base_camera_link
       Value: Orbit (rviz)
-      Yaw: 4.778601169586182
+      Yaw: 3.9686009883880615
     Saved:
       - Class: rviz/Orbit
         Distance: 10.239899635314941
@@ -315,4 +315,4 @@ Window Geometry:
     collapsed: false
   Width: 1795
   X: 57
-  Y: 167
+  Y: 137

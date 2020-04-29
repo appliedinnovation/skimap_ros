@@ -8,8 +8,10 @@
   <!--
       Octomap main mapping node
   -->
-  <node name="octomap" output="screen" pkg="octomap_server" type="octomap_server_node">
+  <node name="octomap" output="screen" pkg="octomap_server" type="octomap_color_server_node">
     <!-- Mapping parameters -->
+    <param name="height_map" value="false" />
+    <param name="colored_map" value="true" />
     <param name="frame_id" value="/odom" />
     
     <param name="base_frame_id" value="base_link" />
